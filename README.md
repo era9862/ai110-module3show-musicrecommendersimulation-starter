@@ -17,17 +17,76 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-world recommenders (Spotify, YouTube) combine two signals: *collaborative filtering* (what people with similar listening histories liked) and *content-based filtering* (how similar a song's own attributes are to what you already like). My version is purely content-based: it has no other users, so it compares each song's attributes to a single taste profile and returns the closest matches. It prioritizes the "vibe" of a song (mood and energy) and the genre, and rewards songs that are *close* to the user's preference rather than simply higher or lower.
 
-Some prompts to answer:
+### Features
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+**`Song`** (from `data/songs.csv`): `id`, `title`, `artist`, `genre`, `mood`, `energy`, `tempo_bpm`, `valence`, `danceability`, `acousticness`
 
-You can include a simple diagram or bullet list if helpful.
+**`UserProfile`**: `favorite_genre`, `favorite_mood`, `target_energy`, `likes_acoustic` (plus optional `target_valence`)
+
+The most useful features for vibe are `energy`, `mood`, `valence`, and `acousticness`. `tempo_bpm` is on a different scale (60–152) and largely overlaps with energy, so it is left out of the first version.
+
+### Scoring Rule (one song)
+
+For numeric features, score by closeness instead of magnitude:
+
+```
+similarity = 1 - |song_value - user_target|     # 1.0 = perfect match, 0.0 = opposite
+```
+
+Total score is a weighted sum:
+
+| Component | Points |
+|---|---|
+| Genre match | +2.0 |
+| Mood match | +1.0 |
+| Energy similarity | up to +2.0 (`2.0 * (1 - abs(energy - target))`) |
+| Valence / acousticness similarity | up to +1.0 each |
+
+Genre is weighted above mood because genre is a coarser, more reliable filter, while mood labels are subjective and a song in another genre can still fit the mood. Energy is weighted as heavily as genre because a closeness score on it separates songs that genre alone cannot.
+
+### Catalog
+
+`data/songs.csv` now has 18 songs. The 8 added songs cover genres and moods missing from the starter set: hip hop, classical, country, EDM, R&B, metal, reggae and folk, with moods such as confident, peaceful, nostalgic, energetic, romantic, angry, uplifting and melancholy.
+
+### Taste Profile
+
+```python
+user_profile = {
+    "favorite_genre": "lofi",
+    "favorite_mood": "chill",
+    "target_energy": 0.40,
+    "target_valence": 0.60,
+    "likes_acoustic": True,
+}
+```
+
+This profile separates "chill lofi" from "intense rock" well: energy alone is 0.40 vs 0.91, and genre and mood both differ, so rock songs score near zero. A weakness is that it is narrow, since it describes one kind of listener and can't express a mix such as "chill lofi plus upbeat pop."
+
+### Data Flow
+
+```
+Input: user_profile + songs.csv
+   |
+   v
+Process: for each song in the catalog
+   score = genre points + mood points + energy/valence/acoustic similarity
+   |
+   v
+Output: sort all (song, score) pairs descending -> top K recommendations
+```
+
+### Expected Biases
+
+- **Genre dominance:** with +2.0 for genre, a mediocre song in the favorite genre can outrank a better mood and energy match from another genre (for example, a chill jazz track for a lofi fan).
+- **Exact-match labels:** "chill" and "relaxed" are treated as completely different moods even though they sound similar.
+- **Small, uneven catalog:** most genres have only one song, so a user whose favorite genre is rare gets a genre bonus on at most one track.
+- **Single target value:** a user who likes both calm and high-energy music is scored against one energy number and fits neither.
+
+### Ranking Rule (list of songs)
+
+The scoring rule only judges one song in isolation; a number like 4.3 means nothing by itself. The ranking rule applies the scoring rule to every song in the catalog, sorts by score descending, and returns the top *k*. Both are needed: scoring defines what "good" means, ranking turns those scores into an ordered recommendation list.
 
 ---
 
