@@ -160,13 +160,204 @@ Top recommendations:
 
 ---
 
+## Evaluation Output
+
+Terminal output of `python -m src.main` (top 5 for each profile).
+
+### Original weights (genre 2.0, mood 1.0, energy 2.0)
+
+```
+Loaded songs: 18
+
+=== High-Energy Pop: {'genre': 'pop', 'mood': 'happy', 'energy': 0.9} ===
+
+1. Sunrise City (pop/happy)  -  Score: 4.84
+     - genre match (+2.0)
+     - mood match (+1.0)
+     - energy 0.82 vs target 0.90 (+1.84)
+2. Gym Hero (pop/intense)  -  Score: 3.94
+     - genre match (+2.0)
+     - energy 0.93 vs target 0.90 (+1.94)
+3. Rooftop Lights (indie pop/happy)  -  Score: 2.72
+     - mood match (+1.0)
+     - energy 0.76 vs target 0.90 (+1.72)
+4. Storm Runner (rock/intense)  -  Score: 1.98
+     - energy 0.91 vs target 0.90 (+1.98)
+5. Neon Overdrive (edm/energetic)  -  Score: 1.88
+     - energy 0.96 vs target 0.90 (+1.88)
+
+=== Chill Lofi: {'genre': 'lofi', 'mood': 'chill', 'energy': 0.4, 'valence': 0.6, 'likes_acoustic': True} ===
+
+1. Library Rain (lofi/chill)  -  Score: 6.76
+     - genre match (+2.0)
+     - mood match (+1.0)
+     - energy 0.35 vs target 0.40 (+1.90)
+     - valence 0.60 vs target 0.60 (+1.00)
+     - acousticness 0.86 fits taste (+0.86)
+2. Midnight Coding (lofi/chill)  -  Score: 6.63
+     - genre match (+2.0)
+     - mood match (+1.0)
+     - energy 0.42 vs target 0.40 (+1.96)
+     - valence 0.56 vs target 0.60 (+0.96)
+     - acousticness 0.71 fits taste (+0.71)
+3. Focus Flow (lofi/focused)  -  Score: 5.77
+     - genre match (+2.0)
+     - energy 0.40 vs target 0.40 (+2.00)
+     - valence 0.59 vs target 0.60 (+0.99)
+     - acousticness 0.78 fits taste (+0.78)
+4. Spacewalk Thoughts (ambient/chill)  -  Score: 4.63
+     - mood match (+1.0)
+     - energy 0.28 vs target 0.40 (+1.76)
+     - valence 0.65 vs target 0.60 (+0.95)
+     - acousticness 0.92 fits taste (+0.92)
+5. Coffee Shop Stories (jazz/relaxed)  -  Score: 3.72
+     - energy 0.37 vs target 0.40 (+1.94)
+     - valence 0.71 vs target 0.60 (+0.89)
+     - acousticness 0.89 fits taste (+0.89)
+
+=== Deep Intense Rock: {'genre': 'rock', 'mood': 'intense', 'energy': 0.92} ===
+
+1. Storm Runner (rock/intense)  -  Score: 4.98
+     - genre match (+2.0)
+     - mood match (+1.0)
+     - energy 0.91 vs target 0.92 (+1.98)
+2. Gym Hero (pop/intense)  -  Score: 2.98
+     - mood match (+1.0)
+     - energy 0.93 vs target 0.92 (+1.98)
+3. Neon Overdrive (edm/energetic)  -  Score: 1.92
+     - energy 0.96 vs target 0.92 (+1.92)
+4. Iron Requiem (metal/angry)  -  Score: 1.90
+     - energy 0.97 vs target 0.92 (+1.90)
+5. Sunrise City (pop/happy)  -  Score: 1.80
+     - energy 0.82 vs target 0.92 (+1.80)
+
+=== Adversarial: Sad but Energetic: {'genre': 'folk', 'mood': 'sad', 'energy': 0.9} ===
+
+1. Winter Porch Songs (folk/melancholy)  -  Score: 2.82
+     - genre match (+2.0)
+     - energy 0.31 vs target 0.90 (+0.82)
+2. Storm Runner (rock/intense)  -  Score: 1.98
+     - energy 0.91 vs target 0.90 (+1.98)
+3. Gym Hero (pop/intense)  -  Score: 1.94
+     - energy 0.93 vs target 0.90 (+1.94)
+4. Neon Overdrive (edm/energetic)  -  Score: 1.88
+     - energy 0.96 vs target 0.90 (+1.88)
+5. Iron Requiem (metal/angry)  -  Score: 1.86
+     - energy 0.97 vs target 0.90 (+1.86)
+
+=== Adversarial: Unknown Genre: {'genre': 'k-pop', 'mood': 'euphoric', 'energy': 0.5} ===
+
+1. Velvet Hours (r&b/romantic)  -  Score: 1.98
+     - energy 0.49 vs target 0.50 (+1.98)
+2. Dusty Back Road (country/nostalgic)  -  Score: 1.96
+     - energy 0.52 vs target 0.50 (+1.96)
+3. Island Breeze (reggae/uplifting)  -  Score: 1.84
+     - energy 0.58 vs target 0.50 (+1.84)
+4. Midnight Coding (lofi/chill)  -  Score: 1.84
+     - energy 0.42 vs target 0.50 (+1.84)
+5. Focus Flow (lofi/focused)  -  Score: 1.80
+     - energy 0.40 vs target 0.50 (+1.80)
+```
+
+### Experiment: genre weight halved (1.0), energy weight doubled (4.0)
+
+```
+##### EXPERIMENT: genre weight 2.0 -> 1.0, energy weight 2.0 -> 4.0 #####
+
+=== High-Energy Pop (shifted weights): {'genre': 'pop', 'mood': 'happy', 'energy': 0.9} ===
+
+1. Sunrise City (pop/happy)  -  Score: 5.68
+     - genre match (+1.0)
+     - mood match (+1.0)
+     - energy 0.82 vs target 0.90 (+3.68)
+2. Gym Hero (pop/intense)  -  Score: 4.88
+     - genre match (+1.0)
+     - energy 0.93 vs target 0.90 (+3.88)
+3. Rooftop Lights (indie pop/happy)  -  Score: 4.44
+     - mood match (+1.0)
+     - energy 0.76 vs target 0.90 (+3.44)
+4. Storm Runner (rock/intense)  -  Score: 3.96
+     - energy 0.91 vs target 0.90 (+3.96)
+5. Neon Overdrive (edm/energetic)  -  Score: 3.76
+     - energy 0.96 vs target 0.90 (+3.76)
+
+=== Chill Lofi (shifted weights): {'genre': 'lofi', 'mood': 'chill', 'energy': 0.4, 'valence': 0.6, 'likes_acoustic': True} ===
+
+1. Library Rain (lofi/chill)  -  Score: 7.66
+     - genre match (+1.0)
+     - mood match (+1.0)
+     - energy 0.35 vs target 0.40 (+3.80)
+     - valence 0.60 vs target 0.60 (+1.00)
+     - acousticness 0.86 fits taste (+0.86)
+2. Midnight Coding (lofi/chill)  -  Score: 7.59
+     - genre match (+1.0)
+     - mood match (+1.0)
+     - energy 0.42 vs target 0.40 (+3.92)
+     - valence 0.56 vs target 0.60 (+0.96)
+     - acousticness 0.71 fits taste (+0.71)
+3. Focus Flow (lofi/focused)  -  Score: 6.77
+     - genre match (+1.0)
+     - energy 0.40 vs target 0.40 (+4.00)
+     - valence 0.59 vs target 0.60 (+0.99)
+     - acousticness 0.78 fits taste (+0.78)
+4. Spacewalk Thoughts (ambient/chill)  -  Score: 6.39
+     - mood match (+1.0)
+     - energy 0.28 vs target 0.40 (+3.52)
+     - valence 0.65 vs target 0.60 (+0.95)
+     - acousticness 0.92 fits taste (+0.92)
+5. Coffee Shop Stories (jazz/relaxed)  -  Score: 5.66
+     - energy 0.37 vs target 0.40 (+3.88)
+     - valence 0.71 vs target 0.60 (+0.89)
+     - acousticness 0.89 fits taste (+0.89)
+
+=== Deep Intense Rock (shifted weights): {'genre': 'rock', 'mood': 'intense', 'energy': 0.92} ===
+
+1. Storm Runner (rock/intense)  -  Score: 5.96
+     - genre match (+1.0)
+     - mood match (+1.0)
+     - energy 0.91 vs target 0.92 (+3.96)
+2. Gym Hero (pop/intense)  -  Score: 4.96
+     - mood match (+1.0)
+     - energy 0.93 vs target 0.92 (+3.96)
+3. Neon Overdrive (edm/energetic)  -  Score: 3.84
+     - energy 0.96 vs target 0.92 (+3.84)
+4. Iron Requiem (metal/angry)  -  Score: 3.80
+     - energy 0.97 vs target 0.92 (+3.80)
+5. Sunrise City (pop/happy)  -  Score: 3.60
+     - energy 0.82 vs target 0.92 (+3.60)
+
+=== Adversarial: Sad but Energetic (shifted weights): {'genre': 'folk', 'mood': 'sad', 'energy': 0.9} ===
+
+1. Storm Runner (rock/intense)  -  Score: 3.96
+     - energy 0.91 vs target 0.90 (+3.96)
+2. Gym Hero (pop/intense)  -  Score: 3.88
+     - energy 0.93 vs target 0.90 (+3.88)
+3. Neon Overdrive (edm/energetic)  -  Score: 3.76
+     - energy 0.96 vs target 0.90 (+3.76)
+4. Iron Requiem (metal/angry)  -  Score: 3.72
+     - energy 0.97 vs target 0.90 (+3.72)
+5. Sunrise City (pop/happy)  -  Score: 3.68
+     - energy 0.82 vs target 0.90 (+3.68)
+
+=== Adversarial: Unknown Genre (shifted weights): {'genre': 'k-pop', 'mood': 'euphoric', 'energy': 0.5} ===
+
+1. Velvet Hours (r&b/romantic)  -  Score: 3.96
+     - energy 0.49 vs target 0.50 (+3.96)
+2. Dusty Back Road (country/nostalgic)  -  Score: 3.92
+     - energy 0.52 vs target 0.50 (+3.92)
+3. Island Breeze (reggae/uplifting)  -  Score: 3.68
+     - energy 0.58 vs target 0.50 (+3.68)
+4. Midnight Coding (lofi/chill)  -  Score: 3.68
+     - energy 0.42 vs target 0.50 (+3.68)
+5. Focus Flow (lofi/focused)  -  Score: 3.60
+     - energy 0.40 vs target 0.50 (+3.60)
+```
+
+---
+
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+I halved the genre weight (2.0 -> 1.0) and doubled the energy weight (2.0 -> 4.0). Each song's score is still a sum of non-negative parts, with energy closeness between 0 and the weight, so the math stays valid, but totals are no longer comparable with the original run. The top 1 song did not change for any profile except "Sad but Energetic", where the folk song lost to rock. Lower ranks reshuffled toward songs with matching energy regardless of genre (see Evaluation in the model card). The new results were more *different* than more *accurate*: they helped the energetic-but-sad user and made the pop user's list look more like a rock list. Full output is in Evaluation Output above.
 
 ---
 
