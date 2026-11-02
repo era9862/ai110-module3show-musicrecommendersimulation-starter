@@ -21,14 +21,13 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The recommender compares every song in the catalog to a simple taste profile (favorite genre, favorite mood, and a target energy level) and gives each song a score out of about 5 points.
 
-Prompts:  
+- A song earns **2 points** if its genre matches the user's favorite genre and **1 point** if its mood matches.
+- For energy, the song earns up to **2 points** based on how *close* its energy is to the user's target. A song with exactly the target energy gets the full 2 points, and the further away it is, the fewer points it gets. Higher energy is not automatically better.
+- If the profile also includes a target valence (how positive the song sounds) or a preference for acoustic music, closeness on those earns up to 1 extra point each.
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
+Every point is recorded with a short reason, such as "genre match (+2.0)", so each recommendation can be explained. The songs are then sorted from highest to lowest score and the top few are shown. The scoring step judges one song at a time, and the ranking step puts all the judged songs in order.
 
 Avoid code here. Pretend you are explaining the idea to a friend who does not program.
 
